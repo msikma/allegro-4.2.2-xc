@@ -14,9 +14,11 @@ The first step is to get a working DJGPP compiler, as per [andrewwutw's build-dj
 
 ### Compiling
 
+If you're on Mac OS X, and you've set up DJGPP correctly, it should work out of the box. On other platforms, you'll need to edit `xmake.sh` to set the correct paths.
+
 Run `./xmake.sh lib` to compile the library. No standard make command will work.
 
-This should work out of the box. If all goes well, a `lib/djgpp/liballeg.a` file will be generated that you can link with.
+If all goes well, a `lib/djgpp/liballeg.a` file will be generated that you can link with.
 
 Usage on Windows
 -------------------
