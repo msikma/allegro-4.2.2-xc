@@ -8,14 +8,17 @@
 # 1. Put here the path on which the cross compiler and other tools
 # for the target will be found with standard names.
 
-XC_PATH=/usr/local/cross-tools/i386-mingw32msvc/bin:/usr/local/cross-tools/bin
-XPREFIX=i386-mingw32msvc-
+# Note: these paths are Mac OS X specific.
+XC_PATH=/usr/local/djgpp/bin
+XPREFIX=i586-pc-msdosdjgpp-
 
 # 2. Put here the path for where things are to be installed.
 # You should have created the lib, info and include directories
 # in this directory.
 
-INSTALL_BASE=/usr/local/cross-tools/i386-mingw32msvc
+# Note: unused. I don't recommend using install, it probably
+# won't work correctly. (msikma, 2016)
+INSTALL_BASE=/usr/local/djgpp/
 
 # Set up some environment variables and export them to GNU make.
 
