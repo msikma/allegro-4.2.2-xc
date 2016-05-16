@@ -14,6 +14,7 @@ PLATFORM = djgpp
 CC = gcc
 EXE = .exe
 OBJ = .o
+AR = ar
 
 PLATFORM_DIR = obj/djgpp
 
@@ -22,6 +23,8 @@ LIB_NAME = lib/djgpp/lib$(VERSION).a
 
 ifdef CROSSCOMPILE
    UNIX_TOOLS = 1
+   CC = $(XPREFIX)gcc
+   AR = $(XPREFIX)ar
 endif
 
 ifneq (,$(findstring bash,$(SHELL)))
@@ -183,7 +186,7 @@ endif
 
 OFLAGS = $(TARGET_ARCH) $(TARGET_OPTS)
 
-CFLAGS = -DALLEGRO_LIB_BUILD
+CFLAGS = -DALLEGRO_LIB_BUILD -fgnu89-inline
 
 
 
@@ -330,7 +333,7 @@ include makefile.tst
 # -------- finally, we get to the fun part... --------
 
 define MAKE_LIB
-   ar rs $(LIB_NAME) $(OBJECTS)
+   $(AR) rs $(LIB_NAME) $(OBJECTS)
 endef
 
 COMPILE_FLAGS = $(subst src/,-DALLEGRO_SRC ,$(findstring src/, $<))$(CFLAGS)
