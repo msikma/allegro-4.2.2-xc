@@ -65,7 +65,7 @@ static void oss_midi_set_pitch(int voice, int note, int bend);
 
 static int seq_fd = -1;
 static int seq_device;
-static int seq_synth_type, seq_synth_subtype; 
+static int seq_synth_type, seq_synth_subtype;
 static int seq_patch[MAX_VOICES];
 static int seq_note[MAX_VOICES];
 static int seq_drum_start;
@@ -83,7 +83,7 @@ MIDI_DRIVER midi_oss =
    MIDI_OSS,
    empty_string,
    empty_string,
-   "Open Sound System", 
+   "Open Sound System",
    0, 0, 0xFFFF, 0, -1, -1,
    oss_midi_detect,
    oss_midi_init,
@@ -91,8 +91,8 @@ MIDI_DRIVER midi_oss =
    oss_midi_set_mixer_volume,
    oss_midi_get_mixer_volume,
    NULL,
-   _dummy_load_patches, 
-   _dummy_adjust_patches, 
+   _dummy_load_patches,
+   _dummy_adjust_patches,
    oss_midi_key_on,
    oss_midi_key_off,
    oss_midi_set_volume,
@@ -125,7 +125,7 @@ static int seq_attempt_open(void)
 					                      uconvert_ascii("/dev/sequencer", tmp3)));
 
    fd = open(uconvert_toascii(seq_driver, tmp1), O_WRONLY);
-   if (fd < 0) 
+   if (fd < 0)
       uszprintf(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("%s: %s"), seq_driver, ustrerror(errno));
 
    return fd;
@@ -147,7 +147,7 @@ static int seq_find_synth(int fd)
 
    best_device = -1;
    best_score = 0;
-   
+
    /* Detect the best device */
    for (i = 0; i < num_synths; i++) {
       info.device = i;
@@ -188,7 +188,7 @@ static int seq_find_synth(int fd)
 
    /* Cool, we got a decent synth type */
    seq_device = best_device;
-   
+
    /* Now get more information */
    info.device = seq_device;
    if (ioctl(fd, SNDCTL_SYNTH_INFO, &info) == -1)
@@ -200,9 +200,9 @@ static int seq_find_synth(int fd)
    midi_oss.voices = info.nr_voices;
    if (midi_oss.voices > MAX_VOICES) midi_oss.voices = MAX_VOICES;
 
-   
+
    switch (seq_synth_type) {
-   
+
       case SYNTH_TYPE_FM:
 	 switch (seq_synth_subtype) {
 	    case FM_TYPE_ADLIB:
@@ -292,8 +292,8 @@ static void seq_setup_awe32 (void)
 
    seq_drum_start = midi_oss.voices;
    if (seq_drum_start > 32) seq_drum_start = 32;
-   
-   /* These non-32 cases probably never happen, since the AWE32 has 
+
+   /* These non-32 cases probably never happen, since the AWE32 has
     * 32 voices and anything higher needs a new interface... */
    if (midi_oss.voices <= 1) {
       drums = 0;
@@ -314,10 +314,10 @@ static void seq_setup_awe32 (void)
    bits = (1<<9);
    seq_drum_start -= drums;
 #endif
-   
-   /* Tell the AWE which channels are drum channels.  No, I don't know 
-    * what 'multi' mode is or how to play drums in the other modes.  
-    * This is just what playmidi does (except I'm using AWE_PLAY_MULTI 
+
+   /* Tell the AWE which channels are drum channels.  No, I don't know
+    * what 'multi' mode is or how to play drums in the other modes.
+    * This is just what playmidi does (except I'm using AWE_PLAY_MULTI
     * instead of its value, 1). */
    AWE_SET_CHANNEL_MODE(seq_device, AWE_PLAY_MULTI);
    AWE_DRUM_CHANNELS(seq_device, bits);
@@ -360,7 +360,7 @@ static int oss_midi_init(int input, int voices)
    }
 
    seq_fd = seq_attempt_open();
-   if (seq_fd < 0) 
+   if (seq_fd < 0)
       return -1;
 
    if (!seq_find_synth(seq_fd)) {
@@ -373,22 +373,22 @@ static int oss_midi_init(int input, int voices)
 
    /* Driver-specific setup */
    if (seq_synth_type == SYNTH_TYPE_FM) {
-   
+
       seq_setup_fm();
-      
+
    } else if (seq_synth_type == SYNTH_TYPE_SAMPLE) {
 
 #ifdef UOSSMIDI_HAVE_AWE32
       if (seq_synth_subtype == SAMPLE_TYPE_AWE32) {
 
 	 seq_setup_awe32();
-	 
+
       }
 #endif
-      
+
    }
 
-	       
+
    for (i = 0; i < (sizeof(seq_patch) / sizeof(int)); i++) {
       seq_patch[i] = -1;
       seq_note[i] = -1;
@@ -450,25 +450,25 @@ static int oss_midi_get_mixer_volume(void)
 
 
 /* get_hardware_voice:
- *  Get the hardware voice corresponding to this virtual voice.  The 
+ *  Get the hardware voice corresponding to this virtual voice.  The
  *  hardware may support more than one note per voice, in which case
  *  you don't want to terminate old notes on reusing a voice, but when
  *  Allegro reuses a voice it forgets the old note and won't ever send
  *  a keyoff.  So we should use more virtual (Allegro) voices than the
- *  channels the hardware provides, and map them down to actual 
+ *  channels the hardware provides, and map them down to actual
  *  hardware channels here.
  *
- *  We also swap voices 9 and 15 (MIDI 10 and 16).  This is necessary 
- *  because _midi_allocate_voice can only allocate in continuous ranges 
+ *  We also swap voices 9 and 15 (MIDI 10 and 16).  This is necessary
+ *  because _midi_allocate_voice can only allocate in continuous ranges
  *  -- so we use voices [0,seq_drum_start) for melody and for the
- *  percussion [seq_drum_start,max_voices), as far as Allegro is 
+ *  percussion [seq_drum_start,max_voices), as far as Allegro is
  *  concerned.  But hardware likes percussion on MIDI 10, so we need to
  *  remap it.
  */
 static int get_hardware_voice (int voice)
 {
    int hwvoice = voice;
-   
+
    /* FIXME: is this OK/useful for other things than AWE32? */
    if (seq_synth_type != SYNTH_TYPE_FM) {
 
@@ -489,7 +489,7 @@ static int get_hardware_voice (int voice)
 
 
 /* oss_midi_key_on:
- *  Triggers the specified voice. 
+ *  Triggers the specified voice.
  */
 static void oss_midi_key_on(int inst, int note, int bend, int vol, int pan)
 {
@@ -499,8 +499,8 @@ static void oss_midi_key_on(int inst, int note, int bend, int vol, int pan)
    /* percussion? */
    if (inst > 127) {
       voice = _midi_allocate_voice(seq_drum_start, midi_driver->voices-1);
-      /* TODO: Peter's code decrements inst by 35; but the AWE driver 
-       * ignores inst completely, using note instead, as God (well, GM) 
+      /* TODO: Peter's code decrements inst by 35; but the AWE driver
+       * ignores inst completely, using note instead, as God (well, GM)
        * intended.  Does the FM driver ignore note?  If so then we're OK. */
       note = inst-128;
       inst -= 35;
@@ -514,7 +514,7 @@ static void oss_midi_key_on(int inst, int note, int bend, int vol, int pan)
 
    /* Get the hardware voice corresponding to this virtual voice. */
    hwvoice = get_hardware_voice (voice);
-      
+
    /* FIXME: should we do this or not for FM? */
    if (seq_synth_type != SYNTH_TYPE_FM) {
       /* Stop any previous note on this voice -- but not if it's percussion */
@@ -545,7 +545,7 @@ static void oss_midi_key_off(int voice)
 {
    /* Get the hardware voice corresponding to this virtual voice. */
    int hwvoice = get_hardware_voice (voice);
-      
+
    SEQ_STOP_NOTE(seq_device, hwvoice, seq_note[voice], 64);
    SEQ_DUMPBUF();
 

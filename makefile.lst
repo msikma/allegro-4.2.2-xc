@@ -347,7 +347,7 @@ ALLEGRO_SRC_X_FILES = \
 	src/x/xdga2s.s \
 	src/x/xwins.s \
 	src/misc/colconv.c
-	
+
 ALLEGRO_SRC_QNX_FILES = \
 	src/qnx/qdrivers.c \
 	src/qnx/qkeydrv.c \
@@ -371,21 +371,21 @@ ALLEGRO_SRC_QNX_FILES = \
 	src/misc/colconv.c \
 	src/misc/pckeys.c
 
+# src/macosx/cadigi.m \
+# src/macosx/camidi.m \
+# src/macosx/drivers.m \
+# src/macosx/hidjoy.m \
+# src/macosx/hidman.m \
+# src/macosx/keybd.m \
+# src/macosx/pcpu.m \
+# src/macosx/qtmidi.m \
+# src/macosx/quartz.m \
+# src/macosx/qzfull.m \
+# src/macosx/qzmouse.m \
+# src/macosx/qzwindow.m \
+# src/macosx/soundman.m \
+# src/macosx/system.m \
 ALLEGRO_SRC_MACOSX_FILES = \
-	src/macosx/cadigi.m \
-	src/macosx/camidi.m \
-	src/macosx/drivers.m \
-	src/macosx/hidjoy.m \
-	src/macosx/hidman.m \
-	src/macosx/keybd.m \
-	src/macosx/pcpu.m \
-	src/macosx/qtmidi.m \
-	src/macosx/quartz.m \
-	src/macosx/qzfull.m \
-	src/macosx/qzmouse.m \
-	src/macosx/qzwindow.m \
-	src/macosx/soundman.m \
-	src/macosx/system.m \
 	src/unix/ufile.c \
 	src/unix/utimer.c \
 	src/unix/uptimer.c \
@@ -409,7 +409,7 @@ ALLEGRO_MODULE_FBCON_FILES = \
 ALLEGRO_MODULE_DGA2_FILES = \
 	src/x/xdga2.c \
 	src/x/xdga2s.s
-	
+
 ALLEGRO_MODULE_ALSADIGI_FILES = \
 	src/unix/alsa5.c \
 	src/unix/alsa9.c

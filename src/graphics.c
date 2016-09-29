@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -62,7 +62,7 @@ int _palette_color16[256];
 int _palette_color24[256];
 int _palette_color32[256];
 
-int *palette_color = _palette_color8; 
+int *palette_color = _palette_color8;
 
 BLENDER_FUNC _blender_func15 = NULL;   /* truecolor pixel blender routines */
 BLENDER_FUNC _blender_func16 = NULL;
@@ -249,7 +249,7 @@ GFX_MODE_LIST *get_gfx_mode_list(int card)
    if (system_driver->gfx_drivers)
       list_entry = system_driver->gfx_drivers();
    else
-      list_entry = _gfx_driver_list;
+      list_entry = NULL;
 
    /* find the graphics driver, and if it can fetch mode lists, do so */
    while (list_entry->driver) {
@@ -296,7 +296,7 @@ void destroy_gfx_mode_list(GFX_MODE_LIST *gfx_mode_list)
 
 
 /* set_color_depth:
- *  Sets the pixel size (in bits) which will be used by subsequent calls to 
+ *  Sets the pixel size (in bits) which will be used by subsequent calls to
  *  set_gfx_mode() and create_bitmap(). Valid depths are 8, 15, 16, 24 and 32.
  */
 void set_color_depth(int depth)
@@ -588,19 +588,19 @@ static int get_config_gfx_driver(char *gfx_card, int w, int h, int v_w, int v_h,
 /* set_gfx_mode:
  *  Sets the graphics mode. The card should be one of the GFX_* constants
  *  from allegro.h, or GFX_AUTODETECT to accept any graphics driver. Pass
- *  GFX_TEXT to return to text mode (although allegro_exit() will usually 
- *  do this for you). The w and h parameters specify the screen resolution 
- *  you want, and v_w and v_h specify the minumum virtual screen size. 
- *  The graphics drivers may actually create a much larger virtual screen, 
+ *  GFX_TEXT to return to text mode (although allegro_exit() will usually
+ *  do this for you). The w and h parameters specify the screen resolution
+ *  you want, and v_w and v_h specify the minumum virtual screen size.
+ *  The graphics drivers may actually create a much larger virtual screen,
  *  so you should check the values of VIRTUAL_W and VIRTUAL_H after you
- *  set the mode. If unable to select an appropriate mode, this function 
+ *  set the mode. If unable to select an appropriate mode, this function
  *  returns -1.
  */
 int set_gfx_mode(int card, int w, int h, int v_w, int v_h)
 {
    TRACE(PREFIX_I "Called set_gfx_mode(%d, %d, %d, %d, %d).\n",
 	 card, w, h, v_w, v_h);
-         
+
    /* TODO: shouldn't this be incremented only IF successful? */
    _gfx_mode_set_count++;
 
@@ -685,7 +685,7 @@ static int _set_gfx_mode(int card, int w, int h, int v_w, int v_h, int allow_con
     */
 #if 0
    /* restore default truecolor pixel format */
-   _rgb_r_shift_15 = 0; 
+   _rgb_r_shift_15 = 0;
    _rgb_g_shift_15 = 5;
    _rgb_b_shift_15 = 10;
    _rgb_r_shift_16 = 0;
@@ -729,7 +729,7 @@ static int _set_gfx_mode(int card, int w, int h, int v_w, int v_h, int allow_con
    if (system_driver->gfx_drivers)
       driver_list = system_driver->gfx_drivers();
    else
-      driver_list = _gfx_driver_list;
+      driver_list = NULL;
 
    /* filter specific fullscreen/windowed driver requests */
    if (card == GFX_AUTODETECT_FULLSCREEN) {
@@ -859,7 +859,7 @@ static int _set_gfx_mode(int card, int w, int h, int v_w, int v_h, int allow_con
    TRACE(PREFIX_I "set_gfx_card success for %dx%dx%d.\n",
 	 screen->w, screen->h, bitmap_color_depth(screen));
    return 0;
-} 
+}
 
 
 
@@ -879,7 +879,7 @@ static int _set_gfx_mode_safe(int card, int w, int h, int v_w, int v_h)
    ASSERT(card == GFX_SAFE);
    ASSERT(system_driver);
    TRACE(PREFIX_I "Trying to set a safe graphics mode.\n");
-   
+
    if (system_driver->get_gfx_safe_mode) {
       ustrzcpy(buf, sizeof(buf), allegro_error);
 
@@ -927,11 +927,11 @@ static int _set_gfx_mode_safe(int card, int w, int h, int v_w, int v_h)
 
 
 /* _sort_out_virtual_width:
- *  Decides how wide the virtual screen really needs to be. That is more 
- *  complicated than it sounds, because the Allegro graphics primitives 
- *  require that each scanline be contained within a single bank. That 
- *  causes problems on cards that don't have overlapping banks, unless the 
- *  bank size is a multiple of the virtual width. So we may need to adjust 
+ *  Decides how wide the virtual screen really needs to be. That is more
+ *  complicated than it sounds, because the Allegro graphics primitives
+ *  require that each scanline be contained within a single bank. That
+ *  causes problems on cards that don't have overlapping banks, unless the
+ *  bank size is a multiple of the virtual width. So we may need to adjust
  *  the width just to keep things running smoothly...
  */
 void _sort_out_virtual_width(int *width, GFX_DRIVER *driver)
@@ -942,7 +942,7 @@ void _sort_out_virtual_width(int *width, GFX_DRIVER *driver)
    if (driver->linear)
       return;
 
-   /* if banks can overlap, we are ok... */ 
+   /* if banks can overlap, we are ok... */
    if (driver->bank_size > driver->bank_gran)
       return;
 
@@ -959,9 +959,9 @@ void _sort_out_virtual_width(int *width, GFX_DRIVER *driver)
 
 
 /* _make_bitmap:
- *  Helper function for creating the screen bitmap. Sets up a bitmap 
- *  structure for addressing video memory at addr, and fills the bank 
- *  switching table using bank size/granularity information from the 
+ *  Helper function for creating the screen bitmap. Sets up a bitmap
+ *  structure for addressing video memory at addr, and fills the bank
+ *  switching table using bank size/granularity information from the
  *  specified graphics driver.
  */
 BITMAP *_make_bitmap(int w, int h, uintptr_t addr, GFX_DRIVER *driver, int color_depth, int bpl)
@@ -1122,7 +1122,7 @@ BITMAP *create_bitmap(int width, int height)
  *  pre-existing bitmap, but possibly with different clipping settings.
  *  Usually will be smaller, and positioned at some arbitrary point.
  *
- *  Mark Wodrich is the owner of the brain responsible this hugely useful 
+ *  Mark Wodrich is the owner of the brain responsible this hugely useful
  *  and beautiful function.
  */
 BITMAP *create_sub_bitmap(BITMAP *parent, int x, int y, int width, int height)
@@ -1136,10 +1136,10 @@ BITMAP *create_sub_bitmap(BITMAP *parent, int x, int y, int width, int height)
    ASSERT((width > 0) && (height > 0));
    ASSERT(system_driver);
 
-   if (x+width > parent->w) 
+   if (x+width > parent->w)
       width = parent->w-x;
 
-   if (y+height > parent->h) 
+   if (y+height > parent->h)
       height = parent->h-y;
 
    if (parent->vtable->create_sub_bitmap)
@@ -1290,7 +1290,7 @@ BITMAP *create_video_bitmap(int width, int height)
 
    ASSERT(width >= 0);
    ASSERT(height > 0);
-   
+
    if (_dispsw_status)
       return NULL;
 
@@ -1458,7 +1458,7 @@ void destroy_bitmap(BITMAP *bitmap)
 		  gfx_driver->destroy_video_bitmap(bitmap);
 		  _AL_FREE(pos);
 		  return;
-	       } 
+	       }
 
 	       /* Update cached bitmap size using worst case scenario:
 		* the bitmap lies between two holes whose size is the cached
@@ -1509,8 +1509,8 @@ void destroy_bitmap(BITMAP *bitmap)
 
 /* set_clip_rect:
  *  Sets the two opposite corners of the clipping rectangle to be used when
- *  drawing to the bitmap. Nothing will be drawn to positions outside of this 
- *  rectangle. When a new bitmap is created the clipping rectangle will be 
+ *  drawing to the bitmap. Nothing will be drawn to positions outside of this
+ *  rectangle. When a new bitmap is created the clipping rectangle will be
  *  set to the full area of the bitmap.
  */
 void set_clip_rect(BITMAP *bitmap, int x1, int y1, int x2, int y2)
@@ -1556,11 +1556,11 @@ void add_clip_rect(BITMAP *bitmap, int x1, int y1, int x2, int y2)
 
 /* set_clip:
  *  Sets the two opposite corners of the clipping rectangle to be used when
- *  drawing to the bitmap. Nothing will be drawn to positions outside of this 
- *  rectangle. When a new bitmap is created the clipping rectangle will be 
- *  set to the full area of the bitmap. If x1, y1, x2 and y2 are all zero 
- *  clipping will be turned off, which will slightly speed up drawing 
- *  operations but will allow memory to be corrupted if you attempt to draw 
+ *  drawing to the bitmap. Nothing will be drawn to positions outside of this
+ *  rectangle. When a new bitmap is created the clipping rectangle will be
+ *  set to the full area of the bitmap. If x1, y1, x2 and y2 are all zero
+ *  clipping will be turned off, which will slightly speed up drawing
+ *  operations but will allow memory to be corrupted if you attempt to draw
  *  off the edge of the bitmap.
  */
 void set_clip(BITMAP *bitmap, int x1, int y1, int x2, int y2)
@@ -1594,7 +1594,7 @@ void set_clip(BITMAP *bitmap, int x1, int y1, int x2, int y2)
 
 
 /* scroll_screen:
- *  Attempts to scroll the hardware screen, returning 0 on success. 
+ *  Attempts to scroll the hardware screen, returning 0 on success.
  *  Check the VIRTUAL_W and VIRTUAL_H values to see how far the screen
  *  can be scrolled. Note that a lot of VESA drivers can only handle
  *  horizontal scrolling in four pixel increments.
@@ -1701,12 +1701,12 @@ int poll_scroll(void)
 
 
 /* show_video_bitmap:
- *  Page flipping function: swaps to display the specified video memory 
+ *  Page flipping function: swaps to display the specified video memory
  *  bitmap object (this must be the same size as the physical screen).
  */
 int show_video_bitmap(BITMAP *bitmap)
 {
-   if ((!is_video_bitmap(bitmap)) || 
+   if ((!is_video_bitmap(bitmap)) ||
        (bitmap->w != SCREEN_W) || (bitmap->h != SCREEN_H) ||
        (_dispsw_status))
       return -1;
@@ -1720,12 +1720,12 @@ int show_video_bitmap(BITMAP *bitmap)
 
 
 /* request_video_bitmap:
- *  Triple buffering function: triggers a swap to display the specified 
+ *  Triple buffering function: triggers a swap to display the specified
  *  video memory bitmap object, which will take place on the next retrace.
  */
 int request_video_bitmap(BITMAP *bitmap)
 {
-   if ((!is_video_bitmap(bitmap)) || 
+   if ((!is_video_bitmap(bitmap)) ||
        (bitmap->w != SCREEN_W) || (bitmap->h != SCREEN_H) ||
        (_dispsw_status))
       return -1;

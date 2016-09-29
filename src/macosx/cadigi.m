@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -137,26 +137,26 @@ static int ca_init(int input, int voices)
       ustrzcpy(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("MacOS X.2 or newer required by this driver"));
       return -1;
    }
-   
+
    NewAUGraph(&graph);
 
    desc.componentType = kAudioUnitType_FormatConverter;
    desc.componentSubType = kAudioUnitSubType_AUConverter;
    desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-   desc.componentFlags = 0;        
-   desc.componentFlagsMask = 0;   
+   desc.componentFlags = 0;
+   desc.componentFlagsMask = 0;
    AUGraphNewNode(graph, &desc, 0, NULL, &converter_node);
-   
+
    desc.componentType = kAudioUnitType_Output;
    desc.componentSubType = kAudioUnitSubType_DefaultOutput;
    desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-   desc.componentFlags = 0;        
-   desc.componentFlagsMask = 0;   
+   desc.componentFlags = 0;
+   desc.componentFlagsMask = 0;
    AUGraphNewNode(graph, &desc, 0, NULL, &output_node);
-   
+
    AUGraphOpen(graph);
    AUGraphInitialize(graph);
-   
+
    AUGraphGetNodeInfo(graph, output_node, NULL, NULL, NULL, &output_unit);
    AUGraphGetNodeInfo(graph, converter_node, NULL, NULL, NULL, &converter_unit);
 
@@ -166,7 +166,7 @@ static int ca_init(int input, int voices)
       ca_exit(FALSE);
       return -1;
    }
-   
+
    input_format_desc.mSampleRate = output_format_desc.mSampleRate;
    input_format_desc.mFormatID = kAudioFormatLinearPCM;
 #ifdef ALLEGRO_BIG_ENDIAN
@@ -179,20 +179,20 @@ static int ca_init(int input, int voices)
    input_format_desc.mBytesPerFrame = 4;
    input_format_desc.mChannelsPerFrame = 2;
    input_format_desc.mBitsPerChannel = 16;
-   
+
    if (AudioUnitSetProperty(converter_unit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &output_format_desc, sizeof(output_format_desc)) ||
        AudioUnitSetProperty(converter_unit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &input_format_desc, sizeof(input_format_desc))) {
       ustrzcpy(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Cannot configure format converter audio unit"));
       ca_exit(FALSE);
       return -1;
    }
-   
+
    _sound_bits = 16;
    _sound_stereo = TRUE;
    _sound_freq = (int)output_format_desc.mSampleRate;
-   
+
    AUGraphConnectNodeInput(graph, converter_node, 0, output_node, 0);
-   
+
    render_cb.inputProc = render_callback;
    render_cb.inputProcRefCon = NULL;
    if (AudioUnitSetProperty(converter_unit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &render_cb, sizeof(render_cb))) {
@@ -207,7 +207,7 @@ static int ca_init(int input, int voices)
       ca_exit(FALSE);
       return -1;
    }
-   
+
    property_size = sizeof(buffer_size);
    if (AudioDeviceGetProperty(audio_device, 0, false, kAudioDevicePropertyBufferSize, &property_size, &buffer_size)) {
       ustrzcpy(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Cannot get CoreAudio device buffer size"));
@@ -221,9 +221,9 @@ static int ca_init(int input, int voices)
       ca_exit(FALSE);
       return -1;
    }
-   
+
    AUGraphStart(graph);
-   
+
    device_name_size = sizeof(device_name);
    manufacturer_size = sizeof(manufacturer);
    if (!AudioDeviceGetProperty(audio_device, 0, false, kAudioDevicePropertyDeviceName, &device_name_size, device_name) &&
@@ -237,7 +237,7 @@ static int ca_init(int input, int voices)
 	 _sound_freq, uconvert_ascii(_sound_stereo ? "stereo" : "mono", tmp3));
    }
    digi_core_audio.desc = ca_desc;
-   
+
    return 0;
 }
 

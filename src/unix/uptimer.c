@@ -19,6 +19,7 @@
 #include "allegro.h"
 #include "allegro/internal/aintern.h"
 #include "allegro/platform/aintunix.h"
+#include "allegro/platform/alosx.h"
 
 
 #ifdef ALLEGRO_HAVE_LIBPTHREAD
@@ -114,7 +115,7 @@ static void *ptimer_thread_func(void *unused)
    {
       struct sched_param sparam;
       int spolicy;
-   
+
       if (pthread_getschedparam(pthread_self(), &spolicy, &sparam) == EOK) {
          sparam.sched_priority += 4;
          pthread_setschedparam(pthread_self(), spolicy, &sparam);

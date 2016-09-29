@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -135,10 +135,10 @@ int install_joystick(int type)
    if (system_driver->joystick_drivers)
       driver_list = system_driver->joystick_drivers();
    else
-      driver_list = _joystick_driver_list;
+      driver_list = NULL;
 
    /* search table for a specific driver */
-   for (c=0; driver_list[c].driver; c++) { 
+   for (c=0; driver_list[c].driver; c++) {
       if (driver_list[c].id == type) {
 	 joystick_driver = driver_list[c].driver;
 	 joystick_driver->name = joystick_driver->desc = get_config_text(joystick_driver->ascii_name);
@@ -146,7 +146,7 @@ int install_joystick(int type)
 	 if (joystick_driver->init() != 0) {
 	    if (!ugetc(allegro_error))
 	       uszprintf(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("%s not found"), joystick_driver->name);
-	    joystick_driver = NULL; 
+	    joystick_driver = NULL;
 	    _joy_type = JOY_TYPE_NONE;
 	    return -1;
 	 }
@@ -218,14 +218,14 @@ int poll_joystick(void)
    if ((joystick_driver) && (joystick_driver->poll))
       return joystick_driver->poll();
 
-   return -1; 
+   return -1;
 }
 
 
 
 /* save_joystick_data:
  *  After calibrating a joystick, this function can be used to save the
- *  information into the specified file, from where it can later be 
+ *  information into the specified file, from where it can later be
  *  restored by calling load_joystick_data().
  */
 int save_joystick_data(AL_CONST char *filename)

@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -229,7 +229,7 @@ static int bpp_index_for_mode(int depth, int driver, int mode)
 
 /* change_proc:
  *  Stores the current driver in d1 and graphics mode in d2; if a new
- *  driver is selected in the listbox, it updates the resolution and 
+ *  driver is selected in the listbox, it updates the resolution and
  *  color depth listboxes so that they redraw; if a new resolution is
  *  selected in the listbox, it updates the color depth listbox. The
  *  current selection is kept across the changes as much as possible.
@@ -250,7 +250,7 @@ static int change_proc(int msg, DIALOG *d, int c)
       /* record the new setting */
       d->d1 = what_dialog[GFX_DRIVERLIST].d1;
 
-      /* try to preserve the resolution */      
+      /* try to preserve the resolution */
       what_dialog[GFX_MODELIST].d1 = 0;
 
       for (i = 0; i < driver_list[d->d1].mode_count; i++) {
@@ -418,7 +418,7 @@ static int create_mode_list(DRIVER_LIST *driver_list_entry, FILTER_FUNCTION filt
 	    destroy_gfx_mode_list(gfx_mode_list);
 	    return -1;
 	 }
-      } 
+      }
    }
 
    if (driver_list_entry->mode_count > 0) {
@@ -449,7 +449,7 @@ static int create_driver_list(FILTER_FUNCTION filter)
    if (system_driver->gfx_drivers)
       driver_info = system_driver->gfx_drivers();
    else
-      driver_info = _gfx_driver_list;
+      driver_info = NULL;
 
    driver_list = _AL_MALLOC(sizeof(DRIVER_LIST) * 3);
    if (!driver_list) return -1;
@@ -616,16 +616,16 @@ static AL_CONST char *gfx_depth_getter(int index, int *list_size)
    ustrzcat(mode_string, sizeof(mode_string), uconvert_ascii(" ", tmp));
    ustrzcat(mode_string, sizeof(mode_string), get_config_text("colors"));
    ustrzcat(mode_string, sizeof(mode_string), uconvert_ascii(")", tmp));
- 
+
    return mode_string;
 }
 
 
 
 /* gfx_mode_select_filter:
- *  Extended version of the graphics mode selection dialog, which allows the 
- *  user to select the color depth as well as the resolution and hardware 
- *  driver. This version of the function reads the initial values from the 
+ *  Extended version of the graphics mode selection dialog, which allows the
+ *  user to select the color depth as well as the resolution and hardware
+ *  driver. This version of the function reads the initial values from the
  *  parameters when it activates, so you can specify the default values.
  *  An optional filter can be passed to check whether a particular entry
  *  should be displayed or not.
@@ -676,7 +676,7 @@ int gfx_mode_select_filter(int *card, int *w, int *h, int *color_depth, FILTER_F
          if ((driver_list[what_driver].mode_list[i].w == *w)
               && (driver_list[what_driver].mode_list[i].h == *h)) {
             what_dialog[GFX_MODELIST].d1 = i;
-            break; 
+            break;
          }
       }
 
@@ -715,16 +715,16 @@ int gfx_mode_select_filter(int *card, int *w, int *h, int *color_depth, FILTER_F
 
    if (ret == GFX_CANCEL)
       return FALSE;
-   else 
+   else
       return TRUE;
 }
 
 
 
 /* gfx_mode_select_ex:
- *  Extended version of the graphics mode selection dialog, which allows the 
- *  user to select the color depth as well as the resolution and hardware 
- *  driver. This version of the function reads the initial values from the 
+ *  Extended version of the graphics mode selection dialog, which allows the
+ *  user to select the color depth as well as the resolution and hardware
+ *  driver. This version of the function reads the initial values from the
  *  parameters when it activates, so you can specify the default values.
  */
 int gfx_mode_select_ex(int *card, int *w, int *h, int *color_depth)
@@ -741,7 +741,7 @@ int gfx_mode_select_ex(int *card, int *w, int *h, int *color_depth)
 /* gfx_mode_select:
  *  Displays the Allegro graphics mode selection dialog, which allows the
  *  user to select a screen mode and graphics card. Stores the selection
- *  in the three variables, and returns zero if it was closed with the 
+ *  in the three variables, and returns zero if it was closed with the
  *  Cancel button, or non-zero if it was OK'd.
  */
 int gfx_mode_select(int *card, int *w, int *h)

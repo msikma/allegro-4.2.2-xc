@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -47,7 +47,7 @@ void _dummy_adjust_patches(AL_CONST char *patches, AL_CONST char *drums) { }
 void _dummy_key_on(int inst, int note, int bend, int vol, int pan) { }
 
 /* put this after all the dummy functions, so they will all get locked */
-END_OF_FUNCTION(_dummy_detect); 
+END_OF_FUNCTION(_dummy_detect);
 
 
 
@@ -56,7 +56,7 @@ static DIGI_DRIVER digi_none =
    DIGI_NONE,
    empty_string,
    empty_string,
-   "No sound", 
+   "No sound",
    0, 0, 0xFFFF, 0,
    _dummy_detect,
    _dummy_init,
@@ -98,7 +98,7 @@ MIDI_DRIVER _midi_none =
    MIDI_NONE,
    empty_string,
    empty_string,
-   "No sound", 
+   "No sound",
    0, 0, 0xFFFF, 0, -1, -1,
    _dummy_detect,
    _dummy_init,
@@ -203,7 +203,7 @@ int detect_digi_driver(int driver_id)
    if (system_driver->digi_drivers)
       digi_drivers = system_driver->digi_drivers();
    else
-      digi_drivers = _digi_driver_list;
+      digi_drivers = NULL;
 
    for (i=0; digi_drivers[i].id; i++) {
       if (digi_drivers[i].id == driver_id) {
@@ -232,7 +232,7 @@ int detect_digi_driver(int driver_id)
  *  returning the maximum number of voices that it can provide, or
  *  zero if the device is not present. If this routine returns -1,
  *  it is a note-stealing MIDI driver, which shares voices with the
- *  current digital driver. In this situation you can use the 
+ *  current digital driver. In this situation you can use the
  *  reserve_voices() function to specify how the available voices are
  *  divided between the digital and MIDI playback routines. This function
  *  must be called _before_ install_sound().
@@ -250,7 +250,7 @@ int detect_midi_driver(int driver_id)
    if (system_driver->midi_drivers)
       midi_drivers = system_driver->midi_drivers();
    else
-      midi_drivers = _midi_driver_list;
+      midi_drivers = NULL;
 
    for (i=0; midi_drivers[i].id; i++) {
       if (midi_drivers[i].id == driver_id) {
@@ -276,11 +276,11 @@ int detect_midi_driver(int driver_id)
 
 /* reserve_voices:
  *  Reserves a number of voices for the digital and MIDI sound drivers
- *  respectively. This must be called _before_ install_sound(). If you 
+ *  respectively. This must be called _before_ install_sound(). If you
  *  attempt to reserve too many voices, subsequent calls to install_sound()
- *  will fail. Note that depending on the driver you may actually get 
+ *  will fail. Note that depending on the driver you may actually get
  *  more voices than you reserve: these values just specify the minimum
- *  that is appropriate for your application. Pass a negative reserve value 
+ *  that is appropriate for your application. Pass a negative reserve value
  *  to use the default settings.
  */
 void reserve_voices(int digi_voices, int midi_voices)
@@ -292,9 +292,9 @@ void reserve_voices(int digi_voices, int midi_voices)
 
 
 /* install_sound:
- *  Initialises the sound module, returning zero on success. The two card 
- *  parameters should use the DIGI_* and MIDI_* constants defined in 
- *  allegro.h. Pass DIGI_AUTODETECT and MIDI_AUTODETECT if you don't know 
+ *  Initialises the sound module, returning zero on success. The two card
+ *  parameters should use the DIGI_* and MIDI_* constants defined in
+ *  allegro.h. Pass DIGI_AUTODETECT and MIDI_AUTODETECT if you don't know
  *  what the soundcard is.
  */
 int install_sound(int digi, int midi, AL_CONST char *cfg_path)
@@ -349,7 +349,7 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
    if (system_driver->digi_drivers)
       digi_drivers = system_driver->digi_drivers();
    else
-      digi_drivers = _digi_driver_list;
+      digi_drivers = NULL;
 
    for (c=0; digi_drivers[c].driver; c++) {
       digi_driver = digi_drivers[c].driver;
@@ -359,11 +359,11 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
    digi_driver = NULL;
 
    /* search table for a specific digital driver */
-   for (c=0; digi_drivers[c].driver; c++) { 
+   for (c=0; digi_drivers[c].driver; c++) {
       if (digi_drivers[c].id == digi_card) {
 	 digi_driver = digi_drivers[c].driver;
 	 if (!digi_driver->detect(FALSE)) {
-	    digi_driver = &digi_none; 
+	    digi_driver = &digi_none;
 	    if (_al_linker_midi)
 	       _al_linker_midi->exit();
 	    if (!ugetc(allegro_error))
@@ -399,7 +399,7 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
    if (system_driver->midi_drivers)
       midi_drivers = system_driver->midi_drivers();
    else
-      midi_drivers = _midi_driver_list;
+      midi_drivers = NULL;
 
    for (c=0; midi_drivers[c].driver; c++) {
       midi_driver = midi_drivers[c].driver;
@@ -409,12 +409,12 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
    midi_driver = NULL;
 
    /* search table for a specific MIDI driver */
-   for (c=0; midi_drivers[c].driver; c++) { 
+   for (c=0; midi_drivers[c].driver; c++) {
       if (midi_drivers[c].id == midi_card) {
 	 midi_driver = midi_drivers[c].driver;
 	 if (!midi_driver->detect(FALSE)) {
-	    digi_driver = &digi_none; 
-	    midi_driver = &_midi_none; 
+	    digi_driver = &digi_none;
+	    midi_driver = &_midi_none;
 	    if (_al_linker_midi)
 	       _al_linker_midi->exit();
 	    if (!ugetc(allegro_error))
@@ -473,8 +473,8 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
    if ((digi_voices > DIGI_VOICES) || (midi_voices > MIDI_VOICES)) {
       uszprintf(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Insufficient %s voices available"),
 		(digi_voices > DIGI_VOICES) ? get_config_text("digital") : get_config_text("MIDI"));
-      digi_driver = &digi_none; 
-      midi_driver = &_midi_none; 
+      digi_driver = &digi_none;
+      midi_driver = &_midi_none;
       if (_al_linker_midi)
 	 _al_linker_midi->exit();
       return -1;
@@ -482,8 +482,8 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
 
    /* initialise the digital sound driver */
    if (digi_driver->init(FALSE, digi_voices) != 0) {
-      digi_driver = &digi_none; 
-      midi_driver = &_midi_none; 
+      digi_driver = &digi_none;
+      midi_driver = &_midi_none;
       if (_al_linker_midi)
 	 _al_linker_midi->exit();
       if (!ugetc(allegro_error))
@@ -494,8 +494,8 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
    /* initialise the MIDI driver */
    if (midi_driver->init(FALSE, midi_voices) != 0) {
       digi_driver->exit(FALSE);
-      digi_driver = &digi_none; 
-      midi_driver = &_midi_none; 
+      digi_driver = &digi_none;
+      midi_driver = &_midi_none;
       if (_al_linker_midi)
 	 _al_linker_midi->exit();
       if (!ugetc(allegro_error))
@@ -507,14 +507,14 @@ int install_sound(int digi, int midi, AL_CONST char *cfg_path)
    midi_driver->voices = MIN(midi_driver->voices, MIDI_VOICES);
 
    /* check that we actually got enough voices */
-   if ((digi_driver->voices < digi_voices) || 
+   if ((digi_driver->voices < digi_voices) ||
        ((midi_driver->voices < midi_voices) && (!midi_driver->raw_midi))) {
       uszprintf(allegro_error, ALLEGRO_ERROR_SIZE, get_config_text("Insufficient %s voices available"),
                 (digi_driver->voices < digi_voices) ? get_config_text("digital") : get_config_text("MIDI"));
       midi_driver->exit(FALSE);
       digi_driver->exit(FALSE);
-      digi_driver = &digi_none; 
-      midi_driver = &_midi_none; 
+      digi_driver = &digi_none;
+      midi_driver = &_midi_none;
       if (_al_linker_midi)
 	 _al_linker_midi->exit();
       return -1;
@@ -590,7 +590,7 @@ int install_sound_input(int digi, int midi)
    if (system_driver->digi_drivers)
       digi_drivers = system_driver->digi_drivers();
    else
-      digi_drivers = _digi_driver_list;
+      digi_drivers = NULL;
 
    for (c=0; digi_drivers[c].driver; c++) {
       if ((digi_drivers[c].id == digi_input_card) || (digi_input_card == DIGI_AUTODETECT)) {
@@ -624,9 +624,9 @@ int install_sound_input(int digi, int midi)
    if (system_driver->midi_drivers)
       midi_drivers = system_driver->midi_drivers();
    else
-      midi_drivers = _midi_driver_list;
+      midi_drivers = NULL;
 
-   for (c=0; midi_drivers[c].driver; c++) { 
+   for (c=0; midi_drivers[c].driver; c++) {
       if ((midi_drivers[c].id == midi_input_card) || (midi_input_card == MIDI_AUTODETECT)) {
 	 midi_input_driver = midi_drivers[c].driver;
 	 if (midi_input_driver->detect(TRUE)) {
@@ -698,10 +698,10 @@ void remove_sound(void)
 	 _al_linker_midi->exit();
 
       midi_driver->exit(FALSE);
-      midi_driver = &_midi_none; 
+      midi_driver = &_midi_none;
 
       digi_driver->exit(FALSE);
-      digi_driver = &digi_none; 
+      digi_driver = &digi_none;
 
       _remove_exit_func(remove_sound);
       _sound_installed = FALSE;
@@ -834,7 +834,7 @@ void get_hardware_volume(int *digi_volume, int *midi_volume)
 
 
 /* lock_sample:
- *  Locks a SAMPLE struct into physical memory. Pretty important, since 
+ *  Locks a SAMPLE struct into physical memory. Pretty important, since
  *  they are mostly accessed inside interrupt handlers.
  */
 void lock_sample(SAMPLE *spl)
@@ -847,7 +847,7 @@ void lock_sample(SAMPLE *spl)
 
 
 /* load_voc:
- *  Reads a mono VOC format sample file, returning a SAMPLE structure, 
+ *  Reads a mono VOC format sample file, returning a SAMPLE structure,
  *  or NULL on error.
  */
 SAMPLE *load_voc(AL_CONST char *filename)
@@ -857,7 +857,7 @@ SAMPLE *load_voc(AL_CONST char *filename)
    ASSERT(filename);
 
    f = pack_fopen(filename, F_READ);
-   if (!f) 
+   if (!f)
       return NULL;
 
    spl = load_voc_pf(f);
@@ -967,14 +967,14 @@ SAMPLE *load_voc_pf(PACKFILE *f)
       }
    }
 
-   getout: 
+   getout:
    return spl;
 }
 
 
 
 /* load_wav:
- *  Reads a RIFF WAV format sample file, returning a SAMPLE structure, 
+ *  Reads a RIFF WAV format sample file, returning a SAMPLE structure,
  *  or NULL on error.
  */
 SAMPLE *load_wav(AL_CONST char *filename)
@@ -1036,7 +1036,7 @@ SAMPLE *load_wav_pf(PACKFILE *f)
       if (memcmp(buffer, "fmt ", 4) == 0) {
 	 i = pack_igetw(f);            /* should be 1 for PCM data */
 	 length -= 2;
-	 if (i != 1) 
+	 if (i != 1)
 	    goto getout;
 
 	 channels = pack_igetw(f);     /* mono or stereo data */
@@ -1116,7 +1116,7 @@ SAMPLE *create_sample(int bits, int stereo, int freq, int len)
    ASSERT(freq > 0);
    ASSERT(len > 0);
 
-   spl = _AL_MALLOC(sizeof(SAMPLE)); 
+   spl = _AL_MALLOC(sizeof(SAMPLE));
    if (!spl)
       return NULL;
 
@@ -1142,7 +1142,7 @@ SAMPLE *create_sample(int bits, int stereo, int freq, int len)
 
 
 /* destroy_sample:
- *  Frees a SAMPLE struct, checking whether the sample is currently playing, 
+ *  Frees a SAMPLE struct, checking whether the sample is currently playing,
  *  and stopping it if it is.
  */
 void destroy_sample(SAMPLE *spl)
@@ -1181,9 +1181,9 @@ static INLINE int absolute_freq(int freq, AL_CONST SAMPLE *spl)
  *  Triggers a sample at the specified volume, pan position, and frequency.
  *  The volume and pan range from 0 (min/left) to 255 (max/right), although
  *  the resolution actually used by the playback routines is likely to be
- *  less than this. Frequency is relative rather than absolute: 1000 
- *  represents the frequency that the sample was recorded at, 2000 is 
- *  twice this, etc. If loop is true the sample will repeat until you call 
+ *  less than this. Frequency is relative rather than absolute: 1000
+ *  represents the frequency that the sample was recorded at, 2000 is
+ *  twice this, etc. If loop is true the sample will repeat until you call
  *  stop_sample(), and can be manipulated while it is playing by calling
  *  adjust_sample().
  */
@@ -1226,7 +1226,7 @@ void adjust_sample(AL_CONST SAMPLE *spl, int vol, int pan, int freq, int loop)
    int c;
    ASSERT(spl);
 
-   for (c=0; c<VIRTUAL_VOICES; c++) { 
+   for (c=0; c<VIRTUAL_VOICES; c++) {
       if (virt_voice[c].sample == spl) {
 	 voice_set_volume(c, vol);
 	 voice_set_pan(c, pan);
@@ -1242,7 +1242,7 @@ END_OF_FUNCTION(adjust_sample);
 
 
 /* stop_sample:
- *  Kills off a sample, which is required if you have set a sample going 
+ *  Kills off a sample, which is required if you have set a sample going
  *  in looped mode. If there are several copies of the sample playing,
  *  it will stop them all.
  */
@@ -1326,7 +1326,7 @@ static INLINE int allocate_physical_voice(int priority)
 
 
 /* allocate_virtual_voice:
- *  Allocates a virtual voice. This doesn't need to worry about killing off 
+ *  Allocates a virtual voice. This doesn't need to worry about killing off
  *  others to make room, as we allow up to 256 virtual voices to be used
  *  simultaneously.
  */
@@ -1380,7 +1380,7 @@ int allocate_voice(AL_CONST SAMPLE *spl)
 {
    int phys, virt;
    ASSERT(spl);
-   
+
    phys = allocate_physical_voice(spl->priority);
    virt = allocate_virtual_voice();
 
@@ -1418,7 +1418,7 @@ END_OF_FUNCTION(allocate_voice);
 void deallocate_voice(int voice)
 {
    ASSERT(voice >= 0 && voice < VIRTUAL_VOICES);
-   
+
    if (virt_voice[voice].num >= 0) {
       digi_driver->stop_voice(virt_voice[voice].num);
       digi_driver->release_voice(virt_voice[voice].num);
@@ -1472,7 +1472,7 @@ END_OF_FUNCTION(reallocate_voice);
 
 
 /* release_voice:
- *  Flags that a voice is no longer going to be updated, so it can 
+ *  Flags that a voice is no longer going to be updated, so it can
  *  automatically be freed as soon as the sample finishes playing.
  */
 void release_voice(int voice)
@@ -1665,7 +1665,7 @@ void voice_ramp_volume(int voice, int time, int endvol)
    ASSERT(voice >= 0 && voice < VIRTUAL_VOICES);
    ASSERT(endvol >= 0 && endvol <= 255);
    ASSERT(time >= 0);
-   
+
    if (_digi_volume >= 0)
       endvol = (endvol * _digi_volume) / 255;
 
@@ -1729,7 +1729,7 @@ void voice_set_frequency(int voice, int frequency)
 {
    ASSERT(voice >= 0 && voice < VIRTUAL_VOICES);
    ASSERT(frequency > 0);
-   
+
    if (virt_voice[voice].num >= 0) {
       _phys_voice[virt_voice[voice].num].freq = frequency << 12;
       _phys_voice[virt_voice[voice].num].dfreq = 0;
@@ -1750,7 +1750,7 @@ void voice_sweep_frequency(int voice, int time, int endfreq)
    ASSERT(voice >= 0 && voice < VIRTUAL_VOICES);
    ASSERT(endfreq > 0);
    ASSERT(time >= 0);
-   
+
    if (virt_voice[voice].num >= 0) {
       if (digi_driver->sweep_frequency) {
 	 digi_driver->sweep_frequency(virt_voice[voice].num, time, endfreq);
@@ -1841,7 +1841,7 @@ void voice_sweep_pan(int voice, int time, int endpan)
    ASSERT(voice >= 0 && voice < VIRTUAL_VOICES);
    ASSERT(endpan >= 0 && endpan <= 255);
    ASSERT(time >= 0);
-   
+
    if (_sound_flip_pan)
       endpan = 255 - endpan;
 
@@ -1923,7 +1923,7 @@ END_OF_FUNCTION(voice_set_vibrato);
 
 
 /* update_sweeps:
- *  Timer callback routine used to implement volume/frequency/pan sweep 
+ *  Timer callback routine used to implement volume/frequency/pan sweep
  *  effects, for those drivers that can't do them directly.
  */
 static void update_sweeps(void)

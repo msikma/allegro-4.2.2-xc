@@ -26,6 +26,7 @@
 #include "allegro.h"
 #include "allegro/internal/aintern.h"
 #include "allegro/platform/aintunix.h"
+#include "allegro/platform/alosx.h"
 
 #if defined(ALLEGRO_HAVE_SCHED_YIELD) && defined(_POSIX_PRIORITY_SCHEDULING)
    /* ALLEGRO_HAVE_SCHED_YIELD is set by configure */
@@ -61,7 +62,6 @@ _DRIVER_INFO _system_driver_list[] =
    {  SYSTEM_QNX,       &system_qnx,      TRUE  },
 #endif
 #ifdef ALLEGRO_MACOSX
-   {  SYSTEM_MACOSX,    &system_macosx,   TRUE  },
 #endif
    {  SYSTEM_NONE,      &system_none,     FALSE },
    {  0,                NULL,             0     }
@@ -162,7 +162,7 @@ void _unix_read_os_type(void)
       struct utsname utsn;
       char *tmpstr, *tmpstr2;
       size_t pos;
-      
+
       uname(&utsn);
 
       /* fetch OS version and revision */
@@ -218,7 +218,7 @@ void _unix_read_os_type(void)
       os_type = OSTYPE_UNIX;
 
    #endif
-   
+
    os_multitasking = TRUE;
 }
 
@@ -267,13 +267,13 @@ static int _find_executable_file(const char *filename, char *output, int size)
          struct stat finfo;
          char pathname[1024];
          int len;
-            
+
 	 /* Prepend current directory */
 	 getcwd(pathname, sizeof(pathname));
 	 len = strlen(pathname);
 	 pathname[len] = '/';
 	 _al_sane_strncpy (pathname+len+1, filename, strlen(filename));
-            
+
 	 if ((stat(pathname, &finfo)==0) && (!S_ISDIR (finfo.st_mode))) {
 	    do_uconvert (pathname, U_ASCII, output, U_CURRENT, size);
 	    return 1;
@@ -310,7 +310,7 @@ static int _find_executable_file(const char *filename, char *output, int size)
       /* Path search failed */
       _AL_FREE (buffer);
    }
-   
+
    return 0;
 }
 
@@ -329,7 +329,7 @@ void _unix_get_executable_name(char *output, int size)
    FILE *pipe;
    pid_t pid;
    int len;
-   
+
    #ifdef ALLEGRO_HAVE_GETEXECNAME
    {
       const char *s = getexecname();
@@ -349,19 +349,19 @@ void _unix_get_executable_name(char *output, int size)
    /* We need the PID in order to query procfs */
    pid = getpid();
 
-   /* Try a Linux-like procfs */   
+   /* Try a Linux-like procfs */
    /* get symolic link to executable from proc fs */
    sprintf (linkname, "/proc/%d/exe", (int)pid);
    if (stat (linkname, &finfo) == 0) {
       len = readlink (linkname, filename, sizeof(filename)-1);
       if (len>-1) {
 	 filename[len] = '\0';
-         
+
 	 do_uconvert (filename, U_ASCII, output, U_CURRENT, size);
 	 return;
       }
    }
-   
+
    /* Use System V procfs calls if available */
    #ifdef ALLEGRO_HAVE_SV_PROCFS_H
       sprintf (linkname, "/proc/%d/exe", (int)pid);
@@ -369,7 +369,7 @@ void _unix_get_executable_name(char *output, int size)
       if (!fd == -1) {
          ioctl(fd, PIOCPSINFO, &psinfo);
          close(fd);
-   
+
          /* Use argv[0] directly if we can */
       #ifdef ALLEGRO_HAVE_PROCFS_ARGCV
 	 if (psinfo.pr_argv && psinfo.pr_argc) {
@@ -384,7 +384,7 @@ void _unix_get_executable_name(char *output, int size)
 	     * This is better than using the pr_fname field because we need
 	     * the additional path information that may be present in argv[0]
 	     */
-	 
+
 	    /* Skip other args */
 	    char *s = strchr(psinfo.pr_psargs, ' ');
 	    if (s) s[0] = '\0';
@@ -397,7 +397,7 @@ void _unix_get_executable_name(char *output, int size)
             return;
       }
    #endif
-   
+
    /* Last resort: try using the output of the ps command to at least find */
    /* the name of the file if not the full path */
    uszprintf (linkname, sizeof(linkname), "ps -p %d", (int)pid);
@@ -406,16 +406,16 @@ void _unix_get_executable_name(char *output, int size)
    if (pipe) {
       /* The first line of output is a header */
       fgets(linkname, sizeof(linkname), pipe);
-      
+
       /* The information we want is in the last column; find it */
       len = strlen(linkname);
       while (linkname[len] != ' ' && linkname[len] != '\t')
          len--;
-      
+
       /* The second line contains the info we want */
       fgets(linkname, sizeof(linkname), pipe);
       pclose(pipe);
-      
+
       /* Treat special cases: filename between [] and - for login shell */
       if (linkname[len] == '-')
          len++;
@@ -423,21 +423,21 @@ void _unix_get_executable_name(char *output, int size)
       if (linkname[len] == '[' && linkname[strlen(linkname)] == ']') {
          len++;
          linkname[strlen(linkname)] = '\0';
-      }         
-      
+      }
+
       /* Now, the filename should be in the last column */
       _al_sane_strncpy (filename, linkname+len+1, strlen(linkname)-len+1);
-            
+
       if (_find_executable_file(filename, output, size))
          return;
 
-      /* Just return the output from ps... */         
+      /* Just return the output from ps... */
       do_uconvert (filename, U_ASCII, output, U_CURRENT, size);
       return;
    }
 
 #ifdef ALLEGRO_WITH_MAGIC_MAIN
-   /* Try the captured argv[0] */   
+   /* Try the captured argv[0] */
    if (_find_executable_file(__crt0_argv[0], output, size))
       return;
 #endif
@@ -456,7 +456,7 @@ void _unix_get_executable_name(char *output, int size)
 size_t _unix_get_page_size(void)
 {
 #if defined(ALLEGRO_HAVE_SYSCONF) && defined(_SC_PAGESIZE)
-   long page_size = sysconf(_SC_PAGESIZE); 
+   long page_size = sysconf(_SC_PAGESIZE);
 #else
    long page_size = -1;
 #endif

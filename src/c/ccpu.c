@@ -18,9 +18,6 @@
 
 #include "allegro.h"
 
-/* MacOS X has its own check_cpu function, see src/macosx/pcpu.m */
-#ifndef ALLEGRO_MACOSX
-
 /* check_cpu:
  *  This is the function to call to set the globals.
  */
@@ -30,5 +27,3 @@ void check_cpu(void)
    cpu_model = 0;
    cpu_capabilities = 0;
 }
-
-#endif

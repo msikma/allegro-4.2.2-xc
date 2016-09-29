@@ -17,7 +17,7 @@ else
 CC = gcc
 endif
 OBJ_DIR = obj/macosx/$(VERSION)
-EXE = 
+EXE =
 OBJ = .o
 HTML = html
 
@@ -82,9 +82,9 @@ _default: default
 # -------- decide what compiler options to use --------
 
 ifdef WARNMODE
-   WFLAGS = -Wall -W -Werror -Wno-unused -Wno-long-double
+   WFLAGS = -Wall -W -Werror -Wno-unused -Wno-long-long
 else
-   WFLAGS = -Wall -Wno-unused -Wno-long-double
+   WFLAGS = -Wall -Wno-unused -Wno-long-long
 endif
 
 ifdef TARGET_ARCH_COMPAT
@@ -101,7 +101,7 @@ endif
 
 OFLAGS = $(TARGET_ARCH) $(TARGET_OPTS)
 
-CFLAGS = -DALLEGRO_LIB_BUILD 
+CFLAGS = -DALLEGRO_LIB_BUILD -fgnu89-inline
 
 
 
@@ -152,7 +152,7 @@ endif
 
 OBJECT_LIST = $(COMMON_OBJECTS) $(C_OBJECTS) $(basename $(notdir $(ALLEGRO_SRC_MACOSX_FILES)))
 
-STATIC_LIBRARIES = -framework Cocoa -framework Carbon -framework IOKit -framework System -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework QuickTime
+STATIC_LIBRARIES = -framework Foundation -framework Cocoa -framework Carbon -framework IOKit -framework System -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework QuickTime
 ifdef STATICLINK
 LIBRARIES = $(STATIC_LIBRARIES)
 else
@@ -228,13 +228,13 @@ BUILD_HEADERS = $(INCDIR)/osxalleg.h                  \
           $(INCDIR)/allegro/platform/aintunix.h \
           $(INCDIR)/allegro/platform/alosxcfg.h \
           $(INCDIR)/allegro/platform/alplatf.h  \
-          $(INCDIR)/allegro/platform/astdint.h  \
+          $(INCDIR)/allegro/platform/astdint.h \
           $(INCDIR)/allegro/platform/alosx.h
 
 HEADERS = $(addprefix $(INSTALLDIR)/,$(BUILD_HEADERS))
 
 ifdef STATICLINK
-   INSTALL_FILES = $(INSTALLDIR)/$(LIBDIR)/lib$(VERSION)_s.a 
+   INSTALL_FILES = $(INSTALLDIR)/$(LIBDIR)/lib$(VERSION)_s.a
 else
    INSTALL_FILES = $(INSTALLDIR)/$(LIBDIR)/lib$(VERSION)-$(shared_version).dylib
    INSTALL_FILES += $(INSTALLDIR)/$(LIBDIR)/lib$(VERSION)-main.a
@@ -277,7 +277,7 @@ uninstall: generic-uninstall
 	  | xargs -n 1 rm -f
 	@test -d $(HELPBUNDLE) && rm -fR $(HELPBUNDLE) || true
 
-	@echo All gone!	
+	@echo All gone!
 
 install-framework: $(FRAMEWORK)
 
@@ -285,10 +285,10 @@ install-applehelp:
 	install -d $(HELPBUNDLE)
 	install docs/html/*.html $(HELPBUNDLE)
 	sed -n -e '1,6p' docs/html/index.html > $(HELPBUNDLE)/index.html
-	echo "<META NAME=\"AppleTitle\" CONTENT=\"Allegro Help\">" >> $(HELPBUNDLE)/index.html 
-	echo "<META NAME=\"AppleIcon\" CONTENT=\"alex.png\">" >> $(HELPBUNDLE)/index.html 
+	echo "<META NAME=\"AppleTitle\" CONTENT=\"Allegro Help\">" >> $(HELPBUNDLE)/index.html
+	echo "<META NAME=\"AppleIcon\" CONTENT=\"alex.png\">" >> $(HELPBUNDLE)/index.html
 	sed -n -e '7,$$p' docs/html/index.html >> $(HELPBUNDLE)/index.html
-	install misc/alex.png $(HELPBUNDLE) 	
+	install misc/alex.png $(HELPBUNDLE)
 
 $(FRAMEWORK): $(LIB_NAME)
 ifdef STATICLINK
@@ -340,8 +340,8 @@ install-man: docs docs/man/install_allegro.3
 	@install -d  $(MAN_DIR)/man3
 	@echo Installing man files to $(MAN_DIR)/man3
 	@install docs/man/*.3 $(MAN_DIR)/man3/
-	
-	
+
+
 
 # -------- test capabilities --------
 

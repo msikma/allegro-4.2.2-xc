@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -81,21 +81,21 @@ int mouse_y_focus = 1;
 /* TODO: add other shapes! */
 static char mouse_arrow_data[DEFAULT_SPRITE_H * DEFAULT_SPRITE_W] =
 {
-   2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 1, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-   2, 1, 2, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 
-   0, 2, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 
-   0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 
-   0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 
+   2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 1, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   2, 1, 2, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 2, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0,
    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
@@ -141,8 +141,8 @@ static BITMAP *mtemp = NULL;           /* double-buffer drawing area */
 
 #define SCARED_SIZE   16               /* for unscare_mouse() */
 
-static BITMAP *scared_screen[SCARED_SIZE]; 
-static int scared_freeze[SCARED_SIZE]; 
+static BITMAP *scared_screen[SCARED_SIZE];
+static int scared_freeze[SCARED_SIZE];
 static int scared_size = 0;
 
 static int mouse_polled = FALSE;       /* are we in polling mode? */
@@ -154,11 +154,11 @@ static int mouse_semaphore = FALSE;    /* reentrant interrupt? */
 /* draw_mouse_doublebuffer:
  *  Eliminates mouse-cursor flicker by using an off-screen buffer for
  *  updating the cursor, and blitting only the final screen image.
- *  newx and newy contain the new cursor position, and mx and my are 
- *  assumed to contain previous cursor pos. This routine is called if 
+ *  newx and newy contain the new cursor position, and mx and my are
+ *  assumed to contain previous cursor pos. This routine is called if
  *  mouse cursor is to be erased and redrawn, and the two position overlap.
  */
-static void draw_mouse_doublebuffer(int newx, int newy) 
+static void draw_mouse_doublebuffer(int newx, int newy)
 {
    int x1, y1, w, h;
 
@@ -199,7 +199,7 @@ END_OF_STATIC_FUNCTION(draw_mouse_doublebuffer);
  */
 static void draw_mouse(int remove, int add)
 {
-   int normal_draw = (remove ^ add); 
+   int normal_draw = (remove ^ add);
 
    int newmx = _mouse_x;
    int newmy = _mouse_y;
@@ -411,7 +411,7 @@ static BITMAP *create_mouse_pointer(char *data)
    BITMAP *bmp;
    int x, y;
    int col;
-   
+
    bmp = create_bitmap(DEFAULT_SPRITE_W, DEFAULT_SPRITE_H);
 
    for (y=0; y<DEFAULT_SPRITE_H; y++) {
@@ -455,7 +455,7 @@ void set_mouse_sprite(struct BITMAP *sprite)
    }
 
    cursors[MOUSE_CURSOR_ALLEGRO] = mouse_sprite;
-   
+
    lock_bitmap((struct BITMAP*)mouse_sprite);
 
    /* make sure the ms bitmap is big enough */
@@ -511,12 +511,12 @@ void set_mouse_cursor_bitmap(int cursor, struct BITMAP *bmp)
 }
 
 
- 
+
 /* set_mouse_sprite_focus:
  *  Sets co-ordinate (x, y) in the sprite to be the mouse location.
  *  Call after set_mouse_sprite(). Doesn't redraw the sprite.
  */
-void set_mouse_sprite_focus(int x, int y) 
+void set_mouse_sprite_focus(int x, int y)
 {
    if (!mouse_driver)
       return;
@@ -585,7 +585,7 @@ int show_os_cursor(int cursor)
    }
 
 done:
-   if (mouse_driver->timer_poll) 
+   if (mouse_driver->timer_poll)
       install_int(mouse_move, 10);
    return r;
 }
@@ -593,12 +593,12 @@ done:
 
 
 /* show_mouse:
- *  Tells Allegro to display a mouse pointer. This only works when the timer 
- *  module is active. The mouse pointer will be drawn onto the bitmap bmp, 
- *  which should normally be the hardware screen. To turn off the mouse 
- *  pointer, which you must do before you draw anything onto the screen, call 
- *  show_mouse(NULL). If you forget to turn off the mouse pointer when 
- *  drawing something, the SVGA bank switching code will become confused and 
+ *  Tells Allegro to display a mouse pointer. This only works when the timer
+ *  module is active. The mouse pointer will be drawn onto the bitmap bmp,
+ *  which should normally be the hardware screen. To turn off the mouse
+ *  pointer, which you must do before you draw anything onto the screen, call
+ *  show_mouse(NULL). If you forget to turn off the mouse pointer when
+ *  drawing something, the SVGA bank switching code will become confused and
  *  will produce garbage all over the screen.
  */
 void show_mouse(BITMAP *bmp)
@@ -653,7 +653,7 @@ void show_mouse(BITMAP *bmp)
 
 	 hw_cursor_dirty = FALSE;
       }
-      
+
       /* Try to display hardware (custom or system) cursor */
       if ((got_hw_cursor) && (is_same_bitmap(bmp, screen)))
 	 if (gfx_driver->show_mouse(bmp, mx=mouse_x, my=mouse_y) == 0)
@@ -670,7 +670,7 @@ void show_mouse(BITMAP *bmp)
       install_int(mouse_move, 10);
    }
    else {
-      if (mouse_driver->timer_poll) 
+      if (mouse_driver->timer_poll)
 	 install_int(mouse_move, 10);
    }
 }
@@ -848,8 +848,8 @@ void position_mouse_w(int w)
 
 
 /* set_mouse_range:
- *  Sets the screen area within which the mouse can move. Pass the top left 
- *  corner and the bottom right corner (inclusive). If you don't call this 
+ *  Sets the screen area within which the mouse can move. Pass the top left
+ *  corner and the bottom right corner (inclusive). If you don't call this
  *  function the range defaults to (0, 0, SCREEN_W-1, SCREEN_H-1).
  */
 void set_mouse_range(int x1, int y1, int x2, int y2)
@@ -878,7 +878,7 @@ void set_mouse_range(int x1, int y1, int x2, int y2)
 
 
 /* set_mouse_speed:
- *  Sets the mouse speed. Larger values of xspeed and yspeed represent 
+ *  Sets the mouse speed. Larger values of xspeed and yspeed represent
  *  slower mouse movement: the default for both is 2.
  */
 void set_mouse_speed(int xspeed, int yspeed)
@@ -926,7 +926,7 @@ void enable_hardware_cursor(void)
 
 
 /* disable_hardware_cursor:
- *  disables the hardware cursor on platforms where this interferes with 
+ *  disables the hardware cursor on platforms where this interferes with
  *  mickeys and disables system cursors.
  */
 void disable_hardware_cursor(void)
@@ -950,7 +950,7 @@ void disable_hardware_cursor(void)
  *  input, while on others it is only present to keep compatibility with
  *  systems that do need it. So that people can test their polling code
  *  even on platforms that don't strictly require it, after this function
- *  has been called once, the entire system will switch into polling mode 
+ *  has been called once, the entire system will switch into polling mode
  *  and will no longer operate asynchronously even if the driver actually
  *  does support that.
  */
@@ -994,7 +994,7 @@ static void set_mouse_etc(void)
    if ((!mouse_driver) || (!gfx_driver))
       return;
 
-   if ((!_mouse_pointer) || 
+   if ((!_mouse_pointer) ||
        ((screen) && (_mouse_pointer) &&
 	(bitmap_color_depth(_mouse_pointer) != bitmap_color_depth(screen))))
       set_mouse_sprite(NULL);
@@ -1062,7 +1062,7 @@ int install_mouse(void)
    LOCK_FUNCTION(poll_mouse);
    LOCK_FUNCTION(mouse_needs_poll);
    LOCK_FUNCTION(_handle_mouse_input);
-   
+
    /* Construct mouse pointers */
    if (!default_cursors[MOUSE_CURSOR_ARROW])
       default_cursors[MOUSE_CURSOR_ARROW] = create_mouse_pointer(mouse_arrow_data);
@@ -1081,7 +1081,7 @@ int install_mouse(void)
    if (system_driver->mouse_drivers)
       driver_list = system_driver->mouse_drivers();
    else
-      driver_list = _mouse_driver_list;
+      driver_list = NULL;
 
    if (_mouse_type == MOUSEDRV_AUTODETECT)
       _mouse_type = get_config_id(uconvert_ascii("mouse", tmp1), uconvert_ascii("mouse", tmp2), MOUSEDRV_AUTODETECT);
@@ -1098,7 +1098,7 @@ int install_mouse(void)
    if (mouse_driver) {
       mouse_driver->name = mouse_driver->desc = get_config_text(mouse_driver->ascii_name);
       num_buttons = mouse_driver->init();
-   } 
+   }
    else {
       for (i=0; num_buttons<0; i++) {
 	 if (!driver_list[i].driver)
@@ -1135,7 +1135,7 @@ int install_mouse(void)
    mouse_polled = (mouse_driver->poll) ? TRUE : FALSE;
 
    _mouse_installed = TRUE;
-   
+
    disable_hardware_cursor();
 
    set_mouse_etc();

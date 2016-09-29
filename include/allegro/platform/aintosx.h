@@ -15,6 +15,7 @@
  *      See readme.txt for copyright information.
  */
 
+#import <Foundation/Foundation.h>
 
 #ifndef AINTOSX_H
 #define AINTOSX_H
@@ -120,7 +121,7 @@ typedef struct HID_DEVICE
    int cur_app;
 } HID_DEVICE;
 
-typedef struct 
+typedef struct
 {
    int count;
    int capacity;
