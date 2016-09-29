@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# gcc-uni.sh 
+# gcc-uni.sh
 # ----------
 # By Matthew Leverton
 #
@@ -38,7 +38,7 @@ esac
 OSX_TARGET=10.2
 
 # which SDK to use (unused with PPC because gcc-3.3 doesn't know about it))
-SDK_i386=/Developer/SDKs/MacOSX10.4u.sdk
+SDK_i386=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 SDK_PPC=
 
 # i386 flags
@@ -80,7 +80,7 @@ while [ -n "$1" ]; do
 			cmd="$cmd $1"
 			;;
 	esac
-    
+
 	shift
 done
 
@@ -113,19 +113,12 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# build the PPC version
-MACOSX_DEPLOYMENT_TARGET=$OSX_TARGET /usr/bin/$gcc-3.3 $cmd $FLAGS_PPC -arch ppc -o $output.ppc
+# create the universal version
+lipo -create $output.i386 -output $output
 if [ $? -ne 0 ]; then
 	rm -f $output.i386
-	exit 1 
-fi
-
-# create the universal version
-lipo -create $output.i386 $output.ppc -output $output
-if [ $? -ne 0 ]; then
-	rm -f $output.i386 $output.ppc
-	exit 1 
+	exit 1
 fi
 
 # cleanup
-rm -f $output.i386 $output.ppc
+rm -f $output.i386
