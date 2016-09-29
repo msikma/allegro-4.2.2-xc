@@ -38,7 +38,7 @@ esac
 OSX_TARGET=10.2
 
 # which SDK to use (unused with PPC because gcc-3.3 doesn't know about it))
-SDK_i386=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+SDK_i386=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.4u.sdk
 SDK_PPC=
 
 # i386 flags
