@@ -7,6 +7,8 @@ This fork exists so that you can use Allegro to write DOS games with a version o
 
 Originally, this version of Allegro was intended to be used with GCC 2.91.N. Some modifications have been made to make it work with GCC 5.2.0 as provided by DJGPP.
 
+If you must compile this for a target other than DJGPP, you must edit [/include/allegro/platform/alplatf.h](https://github.com/msikma/allegro-4.2.2-xc/blob/master/include/allegro/platform/alplatf.h) and add the correct platform setting.
+
 Usage
 -----
 
