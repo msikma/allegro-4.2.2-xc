@@ -31,13 +31,16 @@ AL_PRINTFUNC(void, al_trace, (AL_CONST char *msg, ...), 1, 2);
 AL_FUNC(void, register_assert_handler, (AL_METHOD(int, handler, (AL_CONST char *msg))));
 AL_FUNC(void, register_trace_handler, (AL_METHOD(int, handler, (AL_CONST char *msg))));
 
-
-#ifdef DEBUGMODE
-   #define ASSERT(condition)     { if (!(condition)) al_assert(__FILE__, __LINE__); }
-   #define TRACE                 al_trace
-#else
-   #define ASSERT(condition)
-   #define TRACE                 1 ? (void) 0 : al_trace
+#ifndef ASSERT
+  #ifndef TRACE
+    #ifdef DEBUGMODE
+       #define ASSERT(condition)     { if (!(condition)) al_assert(__FILE__, __LINE__); }
+       #define TRACE                 al_trace
+    #else
+       #define ASSERT(condition)
+       #define TRACE                 1 ? (void) 0 : al_trace
+    #endif
+  #endif
 #endif
 
 #ifdef __cplusplus
