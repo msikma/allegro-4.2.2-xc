@@ -165,12 +165,13 @@ static void update_shifts(BYTE * keystate)
    /* Can't we just deprecate key_shifts, now that pckeys.c is gone? EP */
    unsigned int modifiers = 0;
 
-   if (keystate[VK_SHIFT] & 0x80)
-      modifiers |= KB_SHIFT_FLAG;
-   if (keystate[VK_CONTROL] & 0x80)
-      modifiers |= KB_CTRL_FLAG;
-   if (keystate[VK_MENU] & 0x80)
-      modifiers |= KB_ALT_FLAG;
+   if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+       modifiers |= KB_SHIFT_FLAG;
+   if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+       modifiers |= KB_CTRL_FLAG;
+   if (GetAsyncKeyState(VK_MENU) & 0x8000)
+       modifiers |= KB_ALT_FLAG;
+
    if (keystate[VK_SCROLL] & 1)
       modifiers |= KB_SCROLOCK_FLAG;
    if (keystate[VK_NUMLOCK] & 1)
@@ -379,7 +380,7 @@ static void key_dinput_handle_scancode(unsigned char scancode, int pressed)
 static void key_dinput_handle(void)
 {
    static DIDEVICEOBJECTDATA scancode_buffer[DINPUT_BUFFERSIZE];
-   long int waiting_scancodes;
+   unsigned long int waiting_scancodes;
    HRESULT hr;
    int i;
 
@@ -424,7 +425,7 @@ int key_dinput_acquire(void)
 {
    HRESULT hr;
    int mask, state;
-   char key_state[256];
+   unsigned char key_state[256];
 
    if (key_dinput_device) {
       mask = KB_SCROLOCK_FLAG | KB_NUMLOCK_FLAG | KB_CAPSLOCK_FLAG;

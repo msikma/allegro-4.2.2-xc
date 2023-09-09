@@ -18,7 +18,7 @@
 @document_title=Allegro Manual
 @html_footer=Back to contents
 @rtfh=Allegro - a game programming library
-@manh="version 4.2.2 (SVN)" "Allegro" "Allegro manual"
+@manh="version 4.2.3" "Allegro" "Allegro manual"
 @mans=#include <allegro.h>
 @man_shortdesc_force1=allegro
 @man_shortdesc_force2=Allegro game programming library.
@@ -52,12 +52,12 @@
        \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
 	\/_/\/_/\/____/\/____/\/____/\/___L\ \/_/ \/___/
 				       /\____/
-				       \_/__/     Version 4.2.2 (SVN)
+				       \_/__/     Version 4.2.3
 
 
 		A game programming library.
 
-	     By Shawn Hargreaves, Nov 26, 2006.
+	     By Shawn Hargreaves, Oct 29, 2009.
 
 		See the AUTHORS file for a
 	       complete list of contributors.
@@ -1849,13 +1849,10 @@ your game.
 @xref Standard config variables, set_config_string, get_config_string
 @eref exconfig
 @shortdesc Sets the configuration file.
-   Sets the configuration file to be used by all subsequent config 
-   functions. If you don't call this function, Allegro will use the default 
-   `allegro.cfg' file, looking first in the same directory as your program
-   and then in the directory pointed to by the ALLEGRO environment variable
-   and the usual platform-specific paths for configuration files. For example
-   it will look for `/etc/allegro.cfg' under Unix.
-
+   Sets the configuration file to be used by all subsequent config
+   functions. (Allegro will not search for this file in other locations
+   as it does with allegro.cfg at the time of initialization.)
+   
    All pointers returned by previous calls to get_config_string() and
    other related functions are invalidated when you call this function!
    You can call this function before install_allegro() to change the
@@ -10302,6 +10299,16 @@ any character, but only one).
    separator (ie. `:' under DOS), this routine will concatenate either a `\'
    or `/' on to it (depending on the platform). Note: ignore the function
    name, it's out of date.
+
+@@void @set_filename_encoding(int encoding)
+@xref get_filename_encoding
+@shortdesc Sets the encoding to use for filenames.
+   Sets the encoding to use for filenames. By default, UTF-8 is assumed.
+
+@@int @get_filename_encoding(void)
+@xref set_filename_encoding
+@shortdesc Returns the encoding currently assumed for filenames.
+   Returns the encoding currently assumed for filenames.
 
 @@int @file_exists(const char *filename, int attrib, int *aret);
 @xref exists, file_size_ex, file_time
